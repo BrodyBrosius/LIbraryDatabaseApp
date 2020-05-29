@@ -1,0 +1,4 @@
+#Command line driven, library tracking database, CRUD
+This is a work-in-progress application that would allow for users to add and manage books and authors 
+in a comprehensive database. Additionally, there will be functionality to add, remove and login unique user accounts which are stored in their own database. The SQL library used is SQLite3, and the Python version is 2.7.17
+W.I.P.
