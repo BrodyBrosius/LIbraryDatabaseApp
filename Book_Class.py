@@ -1,9 +1,10 @@
 from Author_Class import *
 
 class Book(Author):
-    def __init__(self, givenAuthor,bookTitle,bookID,numOfPages,currentStatus):
-        self.givenAuthor = Author()
-        print(self.givenAuthor.getFirstName())
+    def __init__(self, authorFirstName,authorLastName,authorID,bookTitle,bookID,numOfPages,currentStatus):
+        self.authorFirstName = authorFirstName
+        self.authorLastName = authorLastName
+        self.authorID = authorID
         self.bookTitle = bookTitle
         self.bookID = bookID
         self.numOfPages = numOfPages
@@ -28,25 +29,14 @@ class Book(Author):
     def setCurrentStatus(self,currentStatus):
         self.currentStatus = currentStatus
         
-    
-    def addBookToDatabase(self):
-        givenBook = Book
-        givenBookAuthor = givenBook.getAuthor()
-        givenBookAuthorID = givenBook.getAuthor.getAuthorID()
-        givenBookID = givenBook.getBookID()
-        givenBookTitle = givenBook.getBookTitle()
-        givenBookPages = givenBook.getNumOfPages()
-        givenBookStatus = givenBook.getStatus()
-        str(givenBookAuthor)
-        int(givenBookAuthorID)
-        int(givenBookID)
-        str(givenBookTitle)
-        int(givenBookPages)
-        str(givenBookStatus)
+    @staticmethod
+    def addBookToDatabase():
+        print("Please provide the AuthorID for the author of the book.")
+        bookInputAuthorID = raw_input("\n Author ID:")
 
         newBookConn = create_connection(r"/home/masonc/Documents/library database app/Library.db")
         newBookConn.execute("INSERT INTO BOOK (BookID,AuthorID,Title,NumOfPages,CurrentStatus)   \
-                        VALUES (?,?,?,?,?)", (givenBookID, givenBookAuthorID, givenBookTitle,givenBookPages,givenBookStatus))
+                            VALUES (?,?,?,?,?)", (givenBookID, givenBookAuthorID, givenBookTitle,givenBookPages,givenBookStatus))
         newBookConn.commit()
 
 
