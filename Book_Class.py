@@ -1,18 +1,26 @@
 from Author_Class import *
+import random
 
 class Book(Author):
-    def __init__(self, authorFirstName,authorLastName,authorID,bookTitle,bookID,numOfPages,currentStatus):
+    def __init__(self, authorFirstName,authorLastName,authorID,bookTitle,numOfPages):
         self.authorFirstName = authorFirstName
         self.authorLastName = authorLastName
         self.authorID = authorID
         self.bookTitle = bookTitle
-        self.bookID = bookID
+        self.bookID = random.randint(10000,99999)
         self.numOfPages = numOfPages
-        self.currentStatus = currentStatus
+        self.currentStatus = "CHECKED IN"
+        self.authorFullName = authorFirstName + " " + authorLastName
 
     
-    def getAuthor(self):
-        return self.Author
+    def getAuthorFirstName(self):
+        return self.authorFirstName
+    
+    def getAuthorLastName(self):
+        return self.authorLastName
+
+    def getAuthorID(self):
+        return self.authorID
 
     def getBookTitle(self):
         return self.bookTitle
@@ -28,15 +36,23 @@ class Book(Author):
     
     def setCurrentStatus(self,currentStatus):
         self.currentStatus = currentStatus
+    
+    def getAuthorFullName(self):
+        return self.authorFullName
         
-    @staticmethod
-    def addBookToDatabase():
-        print("Please provide the AuthorID for the author of the book.")
-        bookInputAuthorID = raw_input("\n Author ID:")
-
+    
+    def addBookToDatabase(self):
         newBookConn = create_connection(r"/home/masonc/Documents/library database app/Library.db")
-        newBookConn.execute("INSERT INTO BOOK (BookID,AuthorID,Title,NumOfPages,CurrentStatus)   \
-                            VALUES (?,?,?,?,?)", (givenBookID, givenBookAuthorID, givenBookTitle,givenBookPages,givenBookStatus))
+        newBookConn.execute("INSERT INTO BOOK (BookID,AuthorID,Title,NumOfPages,CurrentStatus,AuthorFullName)   \
+                            VALUES (?,?,?,?,?,?)", (int(self.getBookID()), int(self.getAuthorID()), str(self.getBookTitle()),
+                            int(self.getNumOfPages()),str(self.getCurrentStatus()),str(self.getAuthorFullName())))
         newBookConn.commit()
 
+    @staticmethod
+    def displayBookTable(self):
+        authConn = create_connection(r"/home/masonc/Documents/library database app/Library.db")
+        cur = authConn.cursor()
+        with authConn:
+            cur.execute("SELECT * FROM BOOK")
+            print(cur.fetchall())
 

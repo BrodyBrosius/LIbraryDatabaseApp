@@ -10,7 +10,7 @@ class Author():
         
         exitLoop = False
         while (exitLoop == False):
-            self.authorID = random.randint(1000,9999)
+            self.authorID = random.randint(1001,9999)
             if(self.checkIfAuthorIDAlreadyExists(self.authorID) == True):
                 exitLoop == False
             else:

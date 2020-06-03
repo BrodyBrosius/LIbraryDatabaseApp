@@ -20,7 +20,7 @@ class User():
     
 
     def addUserToDatabase(self):
-        thisUserID = random.randint(5,1000)
+        thisUserID = random.randint(5,999)
         int(thisUserID)
         newUserConn = create_connection(r"/home/masonc/Documents/library database app/Users.db")
         newUserConn.execute("INSERT INTO USERS (UserID,UserName,Pass)   \

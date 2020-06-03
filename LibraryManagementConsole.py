@@ -81,15 +81,15 @@ class libraryManagementConsole():
         sql_create_authors_table = """ CREATE TABLE IF NOT EXISTS AUTHOR (
                                         AuthorID    INT PRIMARY KEY,
                                         FirstName   VARCHAR,
-                                        LastName    VARCHAR,
-                                        FullName    VARCHAR
+                                        LastName    VARCHAR
                                     );"""
         sql_create_books_table = """CREATE TABLE IF NOT EXISTS BOOK (
                                         BookID          INT PRIMARY KEY,
                                         AuthorID        INT REFERENCES AUTHOR(AuthorID),
                                         Title           VARCHAR,
                                         NumOfPages      INT,
-                                        CurrentStatus   VARCHAR
+                                        CurrentStatus   VARCHAR,
+                                        AuthorFullName  VARCHAR
                                     );"""
         create_table(libConn, sql_create_authors_table)
         create_table(libConn, sql_create_books_table)
@@ -155,7 +155,17 @@ class libraryManagementConsole():
                 print("Remove Book in Database - 3")
                 bookInput = input("Please select from the above options, or input 'e' to return to main menu")
                 if(bookInput == 1):
-                    Book.addBookToDatabase()
+                    authFirstName = raw_input("Author First Name: ")
+                    authLastName  = raw_input("Author Last Name: ")
+                    authID = raw_input("Author ID: ")
+                    bookTitle = raw_input("Book Title: ")
+                    numPages = input("Number of Pages: ")
+                    newBook = Book(authFirstName,authLastName,authID,bookTitle,numPages)
+                    newBook.addBookToDatabase()
+                elif(bookInput == 2):
+                    print("lmao")
+
+                    
 
 
 
@@ -164,7 +174,7 @@ class libraryManagementConsole():
 
             #USER SUB-MENU
             elif(userInput == 2):
-                print("FEATURE COMING 2")
+             print("FEATURE COMING 2")
             #END OF USER SUB-MENU
 
             #AUTHOR SUB-MENU
