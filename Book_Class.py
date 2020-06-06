@@ -50,9 +50,33 @@ class Book(Author):
 
     @staticmethod
     def displayBookTable(self):
-        authConn = create_connection(r"/home/masonc/Documents/library database app/Library.db")
-        cur = authConn.cursor()
-        with authConn:
+        bookConn = create_connection(r"/home/masonc/Documents/library database app/Library.db")
+        cur = bookConn.cursor()
+        with bookConn:
             cur.execute("SELECT * FROM BOOK")
             print(cur.fetchall())
+
+    @staticmethod
+    def editBookStatus(self):
+        editBookConn = create_connection(r"/home/masonc/Documents/library database app/Library.db")
+        cur = editBookConn.cursor()
+        inputBookID = input("What is the ID of the book whose status you'd like to change?")
+        inputStatusChange = raw_input("What is the status you would like to change? Acceptable inputs are: Lost, Damaged, Checked-out, Checked-in.")
+
+        editBookConn.execute("UPDATE BOOK \
+                                SET CurrentStatus = ? \
+                                WHERE BookID = ?",
+                                (str(inputStatusChange),inputBookID))
+        editBookConn.commit()
+
+    @staticmethod
+    def removeBookFromDatabase(self):
+        delBookConn = create_connection(r"/home/masonc/Documents/library database app/Library.db")
+        cur = delBookConn.cursor()
+        inputBookID = input("What is the ID of the book whose status you'd like to remove?")
+        delBookConn.execute("DELETE FROM BOOK \
+                                WHERE BookID = ?",
+                                (int(inputBookID),))
+        delBookConn.commit()
+        
 

@@ -151,8 +151,8 @@ class libraryManagementConsole():
             if(userInput == 1):
                 print("\n =====BOOK SUB-MENU=====")
                 print("Add Book to Database (if adding a book with an author that is not in the Author table, please add the author first) - 1")
-                print("Edit Book in Database (select this option to update checked out status!) - 2")
-                print("Remove Book in Database - 3")
+                print("Change status of a book - 2")
+                print("Remove Book from Database - 3")
                 bookInput = input("Please select from the above options, or input 'e' to return to main menu")
                 if(bookInput == 1):
                     authFirstName = raw_input("Author First Name: ")
@@ -163,9 +163,13 @@ class libraryManagementConsole():
                     newBook = Book(authFirstName,authLastName,authID,bookTitle,numPages)
                     newBook.addBookToDatabase()
                 elif(bookInput == 2):
-                    print("lmao")
-
-                    
+                    print("\n")
+                    Book.displayBookTable(self)
+                    Book.editBookStatus(self)
+                elif(bookInput == 3):
+                    print("\n")
+                    Book.displayBookTable(self)
+                    Book.removeBookFromDatabase(self)
 
 
 
