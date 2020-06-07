@@ -128,8 +128,8 @@ class libraryManagementConsole():
         exitLoop = False
         print("\n ===============LIBRARY MANAGEMENT CONSOLE VERSION 1.0===============")
         print("\n Add, display, edit or remove Books from the database - 1")
-        print("\n Add, display, edit or remove Users from the database - 2")
-        print("\n Add, display, edit or remove Authors from the database - 3")
+        print("\n Add, or display Users from the database - 2")
+        print("\n Add, display, or edit Authors from the database - 3")
         print("\n Logout - 4")
         print("\n Shutdown - 5")
         print("\n Advanced Options (Requires Admin Login) - 6") #Delete databases, may add deletion actions here as well.
@@ -139,8 +139,8 @@ class libraryManagementConsole():
             print("\n")
             print("\n ===============LIBRARY MANAGEMENT CONSOLE VERSION 1.0===============")
             print("\n Add, display, edit or remove Books from the database - 1")
-            print("\n Add, display, edit or remove Users from the database - 2")
-            print("\n Add, display, edit or remove Authors from the database - 3")
+            print("\n Add, or display Users from the database - 2")
+            print("\n Add, display, or edit Authors from the database - 3")
             print("\n Logout - 4")
             print("\n Shutdown - 5")
             print("\n Advanced Options (Requires Admin Login) - 6") #Delete databases, may add deletion actions here as well.
@@ -153,8 +153,9 @@ class libraryManagementConsole():
                 print("Add Book to Database (if adding a book with an author that is not in the Author table, please add the author first) - 1")
                 print("Change status of a book - 2")
                 print("Remove Book from Database - 3")
-                bookInput = input("Please select from the above options, or input 'e' to return to main menu")
+                bookInput = raw_input("Please select from the above options, or input 'e' to return to main menu. ")
                 if(bookInput == 1):
+                    print("=====ADD BOOK=====")
                     authFirstName = raw_input("Author First Name: ")
                     authLastName  = raw_input("Author Last Name: ")
                     authID = raw_input("Author ID: ")
@@ -163,13 +164,17 @@ class libraryManagementConsole():
                     newBook = Book(authFirstName,authLastName,authID,bookTitle,numPages)
                     newBook.addBookToDatabase()
                 elif(bookInput == 2):
+                    print("=====EDIT STATUS=====")
                     print("\n")
                     Book.displayBookTable(self)
                     Book.editBookStatus(self)
                 elif(bookInput == 3):
+                    print("=====REMOVE BOOK=====")
                     print("\n")
                     Book.displayBookTable(self)
                     Book.removeBookFromDatabase(self)
+                elif(bookInput == 'e'):
+                    self.mainMenu()
 
 
 
@@ -178,7 +183,19 @@ class libraryManagementConsole():
 
             #USER SUB-MENU
             elif(userInput == 2):
-             print("FEATURE COMING 2")
+             print("=====USER SUB-MENU=====")
+             print("\n Add new User to database - 1")
+             print("\n Display all users - 2")
+             thisUserInput = input("Please select from the above options, or press 4 to return to the main menu. ")
+             if(thisUserInput == 1):
+                 print("=====ADD USER MENU=====")
+                 newUserName = raw_input("Please enter the new user's username: ")
+                 newPassWord = raw_input("Please enter the new user's password: ")
+                 tempUserObj = User(newUserName,newPassWord,False)
+            if(thisUserInput == 2):
+                print("=====DISPLAY USERS MENU=====")
+                User.displayUserTable(self)
+
             #END OF USER SUB-MENU
 
             #AUTHOR SUB-MENU
@@ -187,7 +204,7 @@ class libraryManagementConsole():
                 print("Add Author to Database - 1")
                 print("Edit Author Currently in Database - 2")
                 print("Remove Author from Database - 3")
-                authInput = input("Please select from the above options, or input 'e' to return to main menu")
+                authInput = raw_input("Please select from the above options, or input 'e' to return to main menu. ")
                 if(authInput == 1):
                     print("\n Calling add method...")
                     print("\n =====ADD MENU=====")
@@ -226,15 +243,6 @@ class libraryManagementConsole():
 
 
 
-
-
-            
-
-            
-            
-
-
-        
 a = libraryManagementConsole(currentlyActiveUser=None)
 
         

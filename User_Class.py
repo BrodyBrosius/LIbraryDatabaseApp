@@ -38,3 +38,12 @@ class User():
             print("Error! User not added to database.")
         else:
             print("Added new user to database successfully!")
+
+    @staticmethod
+    def displayUserTable(self):
+        userConn = create_connection(r"/home/masonc/Documents/library database app/Users.db")
+        cur = userConn.cursor()
+        with userConn:
+            cur.execute("SELECT * FROM USERS")
+            print(cur.fetchall())
+
