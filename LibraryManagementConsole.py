@@ -3,7 +3,6 @@ from Author_Class import *
 from Book_Class import *
 from Database_Functions import *
 from User_Class import *
-from sqlalchemy import *
 import pandas as pd
 import os.path
 import sys
@@ -39,7 +38,7 @@ class libraryManagementConsole():
         exitLoop = False
         isReturningUser = False
         while (exitLoop == False):
-            answerOne = raw_input("Are you a new or returning user? Please input 'New' or 'Returning'")
+            answerOne = raw_input("Are you a new or returning user? Please input 'New' or 'Returning'\n")
             if(answerOne == 'New'):
                 print("\n" + "Fantastic! Please create a new user name and password!")
                 newUserName = raw_input("Username: ")
@@ -126,13 +125,6 @@ class libraryManagementConsole():
     def mainMenu(self):
         userInput = 0
         exitLoop = False
-        print("\n ===============LIBRARY MANAGEMENT CONSOLE VERSION 1.0===============")
-        print("\n Add, display, edit or remove Books from the database - 1")
-        print("\n Add, or display Users from the database - 2")
-        print("\n Add, display, or edit Authors from the database - 3")
-        print("\n Logout - 4")
-        print("\n Shutdown - 5")
-        print("\n Advanced Options (Requires Admin Login) - 6") #Delete databases, may add deletion actions here as well.
             
         int(userInput)
         while(exitLoop == False):
@@ -153,28 +145,39 @@ class libraryManagementConsole():
                 print("Add Book to Database (if adding a book with an author that is not in the Author table, please add the author first) - 1")
                 print("Change status of a book - 2")
                 print("Remove Book from Database - 3")
-                bookInput = raw_input("Please select from the above options, or input 'e' to return to main menu. ")
-                if(bookInput == 1):
-                    print("=====ADD BOOK=====")
-                    authFirstName = raw_input("Author First Name: ")
-                    authLastName  = raw_input("Author Last Name: ")
-                    authID = raw_input("Author ID: ")
-                    bookTitle = raw_input("Book Title: ")
-                    numPages = input("Number of Pages: ")
-                    newBook = Book(authFirstName,authLastName,authID,bookTitle,numPages)
-                    newBook.addBookToDatabase()
-                elif(bookInput == 2):
-                    print("=====EDIT STATUS=====")
-                    print("\n")
-                    Book.displayBookTable(self)
-                    Book.editBookStatus(self)
-                elif(bookInput == 3):
-                    print("=====REMOVE BOOK=====")
-                    print("\n")
-                    Book.displayBookTable(self)
-                    Book.removeBookFromDatabase(self)
-                elif(bookInput == 'e'):
-                    self.mainMenu()
+                print("Display all books - 4")
+                bookInput = input("Please select from the above options, or input 'e' to return to main menu. ")
+                if(type(bookInput) == int):
+                    if(bookInput == 1):
+                        print("\n")
+                        print("=====ADD BOOK=====")
+                        authFirstName = raw_input("Author First Name: ")
+                        authLastName  = raw_input("Author Last Name: ")
+                        authID = raw_input("Author ID: ")
+                        bookTitle = raw_input("Book Title: ")
+                        numPages = input("Number of Pages: ")
+                        newBook = Book(authFirstName,authLastName,authID,bookTitle,numPages)
+                        newBook.addBookToDatabase()
+                    elif(bookInput == 2):
+                        print("\n")
+                        print("=====EDIT STATUS=====")
+                        Book.displayBookTable(self)
+                        Book.editBookStatus(self)
+                    elif(bookInput == 3):
+                        print("\n")
+                        print("=====REMOVE BOOK=====")
+                        Book.displayBookTable(self)
+                        Book.removeBookFromDatabase(self)
+                    elif(bookInput == 4):
+                        print("\n")
+                        print("=====ALL BOOKS IN LIBRARY=====")
+                        Book.displayBookTable(self)
+                        raw_input("Press any key to return to main menu")
+                        self.mainMenu()
+
+                else:
+                    if(bookInput == 'e'):
+                        self.mainMenu()
 
 
 
@@ -186,15 +189,19 @@ class libraryManagementConsole():
              print("=====USER SUB-MENU=====")
              print("\n Add new User to database - 1")
              print("\n Display all users - 2")
-             thisUserInput = input("Please select from the above options, or press 4 to return to the main menu. ")
+             thisUserInput = input("\n Please select from the above options, or press 4 to return to the main menu. ")
              if(thisUserInput == 1):
+                 print("\n")
                  print("=====ADD USER MENU=====")
                  newUserName = raw_input("Please enter the new user's username: ")
                  newPassWord = raw_input("Please enter the new user's password: ")
                  tempUserObj = User(newUserName,newPassWord,False)
-            if(thisUserInput == 2):
+             if(thisUserInput == 2):
+                print("\n")
                 print("=====DISPLAY USERS MENU=====")
                 User.displayUserTable(self)
+                raw_input("Press any key to continue.")
+                self.mainMenu()
 
             #END OF USER SUB-MENU
 
@@ -205,29 +212,30 @@ class libraryManagementConsole():
                 print("Edit Author Currently in Database - 2")
                 print("Remove Author from Database - 3")
                 authInput = raw_input("Please select from the above options, or input 'e' to return to main menu. ")
-                if(authInput == 1):
-                    print("\n Calling add method...")
-                    print("\n =====ADD MENU=====")
-                    firstNameInput = raw_input("What is the author's first name?")
-                    lastNameInput = raw_input("What is the author's last name?")
-                    createdAuthor = Author(firstNameInput,lastNameInput)
-                    createdAuthor.addAuthorToDatabase()
-                elif(authInput == 2):
-                    print("\n Calling edit method...")
-                    Author.displayAuthorTable(self) #might want to make it prettier
-                    print("\n =====EDIT MENU=====")
-                    whichAuthorID = raw_input("Input the AuthorID of the Author you would like to edit.")
-                    Author.editAuthorInDatabase(whichAuthorID)
-                elif(authInput == 3):
-                    print("\n Calling remove method...")
-                    print("\n =====REMOVE MENU=====")
-                    Author.displayAuthorTable(self) #might want to make it prettier
-                    deleteAuthorID = raw_input("Input the AuthorID of the Author you would like to remove.")
-                    Author.removeAuthorFromDatabase(deleteAuthorID)
-                elif(authInput == 'e'):
-                    self.mainMenu()
+                if(type(authInput) == int):
+                    if(authInput == 1):
+                        print("\n Calling add method...")
+                        print("\n =====ADD MENU=====")
+                        firstNameInput = raw_input("What is the author's first name?")
+                        lastNameInput = raw_input("What is the author's last name?")
+                        createdAuthor = Author(firstNameInput,lastNameInput)
+                        createdAuthor.addAuthorToDatabase()
+                    elif(authInput == 2):
+                        print("\n Calling edit method...")
+                        Author.displayAuthorTable(self) #might want to make it prettier
+                        print("\n =====EDIT MENU=====")
+                        whichAuthorID = raw_input("Input the AuthorID of the Author you would like to edit.")
+                        Author.editAuthorInDatabase(whichAuthorID)
+                    elif(authInput == 3):
+                        print("\n Calling remove method...")
+                        print("\n =====REMOVE MENU=====")
+                        Author.displayAuthorTable(self) #might want to make it prettier
+                        deleteAuthorID = raw_input("Input the AuthorID of the Author you would like to remove.")
+                        Author.removeAuthorFromDatabase(deleteAuthorID)
                 else:
-                    print("\n Please select from the above options, or input 'e' to return to main menu")
+                    if(authInput == 'e'):
+                        self.mainMenu()
+                
              #END OF AUTHOR SUB-MENU
             elif(userInput == 4):
                 self.logoutUser()
@@ -238,13 +246,6 @@ class libraryManagementConsole():
                 print("FEATURE COMING SOON")
             else:
                 print("Error, unacceptable input type. Please try again.")
-
-
-
-
-
-a = libraryManagementConsole(currentlyActiveUser=None)
-
         
 
 
