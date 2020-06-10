@@ -121,6 +121,13 @@ class libraryManagementConsole():
             print("Error! No user currently logged in, please login or see a systems administrator for assistance")
             self.createNewAccountOrLogin()
 
+
+    def RepresentsInt(self,s):
+        try: 
+            int(s)
+            return True
+        except ValueError:
+            return False
     
     def mainMenu(self):
         userInput = 0
@@ -146,7 +153,7 @@ class libraryManagementConsole():
                 print("Change status of a book - 2")
                 print("Remove Book from Database - 3")
                 print("Display all books - 4")
-                bookInput = input("Please select from the above options, or input 'e' to return to main menu. ")
+                bookInput = raw_input("Please select from the above options, or input 'e' to return to main menu. ")
                 if(type(bookInput) == int):
                     if(bookInput == 1):
                         print("\n")
@@ -174,7 +181,6 @@ class libraryManagementConsole():
                         Book.displayBookTable(self)
                         raw_input("Press any key to return to main menu")
                         self.mainMenu()
-
                 else:
                     if(bookInput == 'e'):
                         self.mainMenu()
@@ -211,8 +217,10 @@ class libraryManagementConsole():
                 print("Add Author to Database - 1")
                 print("Edit Author Currently in Database - 2")
                 print("Remove Author from Database - 3")
+                print("Display Authors in Database - 4")
                 authInput = raw_input("Please select from the above options, or input 'e' to return to main menu. ")
-                if(type(authInput) == int):
+                if(authInput.isdigit()):
+                    authInput = int(authInput)
                     if(authInput == 1):
                         print("\n Calling add method...")
                         print("\n =====ADD MENU=====")
@@ -232,11 +240,15 @@ class libraryManagementConsole():
                         Author.displayAuthorTable(self) #might want to make it prettier
                         deleteAuthorID = raw_input("Input the AuthorID of the Author you would like to remove.")
                         Author.removeAuthorFromDatabase(deleteAuthorID)
+                    elif(authInput == 4):
+                        Author.displayAuthorTable(self)
+                        raw_input("Press any key to return to main menu")
+                        self.mainMenu()
                 else:
                     if(authInput == 'e'):
                         self.mainMenu()
-                
-             #END OF AUTHOR SUB-MENU
+
+            #END OF AUTHOR SUB-MENU
             elif(userInput == 4):
                 self.logoutUser()
             elif(userInput == 5):

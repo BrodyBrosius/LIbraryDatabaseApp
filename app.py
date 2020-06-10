@@ -10,5 +10,4 @@ from User_Class import *
 from LibraryManagementConsole import *
 
 
-
 a = libraryManagementConsole(currentlyActiveUser=None)
