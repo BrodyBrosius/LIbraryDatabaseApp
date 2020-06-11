@@ -1,8 +1,4 @@
 #!/usr/bin/env python
-
-
-
-
 from Author_Class import *
 from Book_Class import *
 from Database_Functions import *

@@ -1,5 +1,6 @@
 from Database_Functions import *
 import random
+import pandas as pd
 
 class User():
     def __init__(self, userName, passWord,isReturning):
@@ -42,8 +43,4 @@ class User():
     @staticmethod
     def displayUserTable(self):
         userConn = create_connection(r"/home/masonc/Documents/library database app/Users.db")
-        cur = userConn.cursor()
-        with userConn:
-            cur.execute("SELECT * FROM USERS")
-            print(cur.fetchall())
-
+        print pd.read_sql_query("SELECT * FROM USERS",userConn)

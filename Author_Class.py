@@ -1,5 +1,6 @@
 import random
 from Database_Functions import *
+import pandas as pd
 
 class Author():
     def __init__(self, passedFirstName, passedLastName):
@@ -114,8 +115,5 @@ class Author():
     @staticmethod
     def displayAuthorTable(self):
         authConn = create_connection(r"/home/masonc/Documents/library database app/Library.db")
-        cur = authConn.cursor()
-        with authConn:
-            cur.execute("SELECT * FROM AUTHOR")
-            print(cur.fetchall())
+        print pd.read_sql_query("SELECT * FROM AUTHOR",authConn)
 

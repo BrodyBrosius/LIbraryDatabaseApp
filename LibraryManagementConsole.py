@@ -1,28 +1,30 @@
-#Command line driven, library tracking database, CRUD
 from Author_Class import *
 from Book_Class import *
 from Database_Functions import *
 from User_Class import *
 import pandas as pd
-import os.path
+import os
 import sys
 
 class libraryManagementConsole():
     def __init__(self,currentlyActiveUser):
         
 
-        print("Hello! Welcome to Library Management 1.0! You can use this console to manage your library of books!")
+        print("Hello! Welcome to your Library Management Console! You can use this software to manage your library of books!")
+        current_working_directory = os.getcwd()
+        current_working_directory_and_Users_DB_file = os.path.join(current_working_directory,'Users.db')
+        current_working_directory_and_Library_DB_file = os.path.join(current_working_directory, 'Library.db')
         
-        if(os.path.exists("/home/masonc/Documents/library database app/Users.db") and os.path.exists("/home/masonc/Documents/library database app/Library.db")):
+        if(os.path.exists(current_working_directory_and_Users_DB_file) and os.path.exists(current_working_directory_and_Library_DB_file)):
             self.createNewAccountOrLogin()
 
-        elif(not os.path.exists("/home/masonc/Documents/library database app/Users.db") and os.path.exists("/home/masonc/Documents/library database app/Library.db")):
+        elif(not os.path.exists(current_working_directory_and_Users_DB_file) and os.path.exists(current_working_directory_and_Library_DB_file)):
             createNewDbResponse = raw_input("There appears to be a Library Database already present but no Users database. Create one now?")
             if(createNewDbResponse == 'y'):
                 self.createNewUsersDatabase()
 
         
-        elif(os.path.exists("/home/masonc/Documents/library database app/Users.db") and (not os.path.exists("/home/masonc/Documents/library database app/Library.db"))):
+        elif(os.path.exists(current_working_directory_and_Users_DB_file) and (not os.path.exists(urrent_working_directory_and_Library_DB_file))):
             createNewDbResponse = raw_input("There appears to be a Users database but no Library. Create one now?")
             if(createNewDbResponse == 'y'):
                 self.createNewLibraryDatabase()
@@ -118,16 +120,8 @@ class libraryManagementConsole():
             self.getCurrentlyActiveUser = None
             self.createNewAccountOrLogin()
         else:
-            print("Error! No user currently logged in, please login or see a systems administrator for assistance")
+            print("Error! No user currently logged in, please login or see a systems administrator for assistance.")
             self.createNewAccountOrLogin()
-
-
-    def RepresentsInt(self,s):
-        try: 
-            int(s)
-            return True
-        except ValueError:
-            return False
     
     def mainMenu(self):
         userInput = 0
@@ -136,7 +130,7 @@ class libraryManagementConsole():
         int(userInput)
         while(exitLoop == False):
             print("\n")
-            print("\n ===============LIBRARY MANAGEMENT CONSOLE VERSION 1.0===============")
+            print("\n ===============LIBRARY MANAGEMENT CONSOLE===============")
             print("\n Add, display, edit or remove Books from the database - 1")
             print("\n Add, or display Users from the database - 2")
             print("\n Add, display, or edit Authors from the database - 3")
@@ -154,7 +148,8 @@ class libraryManagementConsole():
                 print("Remove Book from Database - 3")
                 print("Display all books - 4")
                 bookInput = raw_input("Please select from the above options, or input 'e' to return to main menu. ")
-                if(type(bookInput) == int):
+                if(bookInput.isdigit()):
+                    bookInput = int(bookInput)
                     if(bookInput == 1):
                         print("\n")
                         print("=====ADD BOOK=====")
@@ -177,36 +172,36 @@ class libraryManagementConsole():
                         Book.removeBookFromDatabase(self)
                     elif(bookInput == 4):
                         print("\n")
-                        print("=====ALL BOOKS IN LIBRARY=====")
+                        print("=====DISPLAYING BOOKS...=====")
                         Book.displayBookTable(self)
                         raw_input("Press any key to return to main menu")
                         self.mainMenu()
                 else:
                     if(bookInput == 'e'):
                         self.mainMenu()
-
-
-
-
-            #END OF BOOK SUB-MENU
+        #####END OF BOOK SUB-MENU#####
 
             #USER SUB-MENU
             elif(userInput == 2):
              print("=====USER SUB-MENU=====")
              print("\n Add new User to database - 1")
              print("\n Display all users - 2")
-             thisUserInput = input("\n Please select from the above options, or press 4 to return to the main menu. ")
-             if(thisUserInput == 1):
-                 print("\n")
-                 print("=====ADD USER MENU=====")
-                 newUserName = raw_input("Please enter the new user's username: ")
-                 newPassWord = raw_input("Please enter the new user's password: ")
-                 tempUserObj = User(newUserName,newPassWord,False)
-             if(thisUserInput == 2):
-                print("\n")
-                print("=====DISPLAY USERS MENU=====")
-                User.displayUserTable(self)
-                raw_input("Press any key to continue.")
+             thisUserInput = raw_input("\n Please select from the above options, or press 'e' to return to the main menu. ")
+             if(thisUserInput.isdigit()):
+                thisUserInput = int(thisUserInput)
+                if(thisUserInput == 1):
+                    print("\n")
+                    print("=====ADD USER MENU=====")
+                    newUserName = raw_input("Please enter the new user's username: ")
+                    newPassWord = raw_input("Please enter the new user's password: ")
+                    tempUserObj = User(newUserName,newPassWord,False)
+                if(thisUserInput == 2):
+                    print("\n")
+                    print("=====DISPLAYING USERS...=====")
+                    User.displayUserTable(self)
+                    raw_input("Press any key to continue.")
+                    self.mainMenu()
+             else:
                 self.mainMenu()
 
             #END OF USER SUB-MENU
@@ -215,32 +210,24 @@ class libraryManagementConsole():
             elif(userInput == 3):
                 print("\n =====AUTHOR SUB-MENU=====")
                 print("Add Author to Database - 1")
-                print("Edit Author Currently in Database - 2")
-                print("Remove Author from Database - 3")
-                print("Display Authors in Database - 4")
+                print("Display Authors in Database - 2")
+                print("Edit Author Currently in Database - 3")
                 authInput = raw_input("Please select from the above options, or input 'e' to return to main menu. ")
                 if(authInput.isdigit()):
                     authInput = int(authInput)
                     if(authInput == 1):
-                        print("\n Calling add method...")
                         print("\n =====ADD MENU=====")
                         firstNameInput = raw_input("What is the author's first name?")
                         lastNameInput = raw_input("What is the author's last name?")
                         createdAuthor = Author(firstNameInput,lastNameInput)
                         createdAuthor.addAuthorToDatabase()
                     elif(authInput == 2):
-                        print("\n Calling edit method...")
                         Author.displayAuthorTable(self) #might want to make it prettier
                         print("\n =====EDIT MENU=====")
                         whichAuthorID = raw_input("Input the AuthorID of the Author you would like to edit.")
                         Author.editAuthorInDatabase(whichAuthorID)
                     elif(authInput == 3):
-                        print("\n Calling remove method...")
-                        print("\n =====REMOVE MENU=====")
-                        Author.displayAuthorTable(self) #might want to make it prettier
-                        deleteAuthorID = raw_input("Input the AuthorID of the Author you would like to remove.")
-                        Author.removeAuthorFromDatabase(deleteAuthorID)
-                    elif(authInput == 4):
+                        print("\n =====DISPLAYING AUTHORS=====")
                         Author.displayAuthorTable(self)
                         raw_input("Press any key to return to main menu")
                         self.mainMenu()

@@ -1,5 +1,6 @@
 from Author_Class import *
 import random
+import pandas as pd
 
 class Book(Author):
     def __init__(self, authorFirstName,authorLastName,authorID,bookTitle,numOfPages):
@@ -51,10 +52,7 @@ class Book(Author):
     @staticmethod
     def displayBookTable(self):
         bookConn = create_connection(r"/home/masonc/Documents/library database app/Library.db")
-        cur = bookConn.cursor()
-        with bookConn:
-            cur.execute("SELECT * FROM BOOK")
-            print(cur.fetchall())
+        print pd.read_sql_query("SELECT * FROM BOOK",bookConn)
 
     @staticmethod
     def editBookStatus(self):
