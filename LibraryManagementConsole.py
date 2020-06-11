@@ -8,23 +8,23 @@ import sys
 
 class libraryManagementConsole():
     def __init__(self,currentlyActiveUser):
-        
+        self.current_working_directory = os.getcwd()
+        self.current_working_directory_and_Users_DB_file = os.path.join(self.current_working_directory,'Users.db')
+        self.current_working_directory_and_Library_DB_file = os.path.join(self.current_working_directory, 'Library.db')
 
         print("Hello! Welcome to your Library Management Console! You can use this software to manage your library of books!")
-        current_working_directory = os.getcwd()
-        current_working_directory_and_Users_DB_file = os.path.join(current_working_directory,'Users.db')
-        current_working_directory_and_Library_DB_file = os.path.join(current_working_directory, 'Library.db')
         
-        if(os.path.exists(current_working_directory_and_Users_DB_file) and os.path.exists(current_working_directory_and_Library_DB_file)):
+        
+        if(os.path.exists(self.current_working_directory_and_Users_DB_file) and os.path.exists(self.current_working_directory_and_Library_DB_file)):
             self.createNewAccountOrLogin()
 
-        elif(not os.path.exists(current_working_directory_and_Users_DB_file) and os.path.exists(current_working_directory_and_Library_DB_file)):
+        elif(not os.path.exists(self.current_working_directory_and_Users_DB_file) and os.path.exists(self.current_working_directory_and_Library_DB_file)):
             createNewDbResponse = raw_input("There appears to be a Library Database already present but no Users database. Create one now?")
             if(createNewDbResponse == 'y'):
                 self.createNewUsersDatabase()
 
         
-        elif(os.path.exists(current_working_directory_and_Users_DB_file) and (not os.path.exists(urrent_working_directory_and_Library_DB_file))):
+        elif(os.path.exists(self.current_working_directory_and_Users_DB_file) and (not os.path.exists(self.current_working_directory_and_Library_DB_file))):
             createNewDbResponse = raw_input("There appears to be a Users database but no Library. Create one now?")
             if(createNewDbResponse == 'y'):
                 self.createNewLibraryDatabase()
@@ -68,7 +68,7 @@ class libraryManagementConsole():
             self.createNewLibraryDatabase()    
     
     def createNewUsersDatabase(self):
-        userConn = create_connection(r"/home/masonc/Documents/library database app/Users.db")
+        userConn = create_connection(self.current_working_directory_and_Users_DB_file)
         sql_create_users_table = """ CREATE TABLE IF NOT EXISTS USERS (
                                         UserID      INT PRIMARY KEY,
                                         UserName    TEXT,
@@ -78,7 +78,7 @@ class libraryManagementConsole():
         print("CONSOLE LOG: New users database and accompanying table completed.")
     
     def createNewLibraryDatabase(self):
-        libConn = create_connection(r"/home/masonc/Documents/library database app/Library.db")
+        libConn = create_connection(self.current_working_directory_and_Library_DB_file)
         sql_create_authors_table = """ CREATE TABLE IF NOT EXISTS AUTHOR (
                                         AuthorID    INT PRIMARY KEY,
                                         FirstName   VARCHAR,
@@ -99,7 +99,7 @@ class libraryManagementConsole():
     def loginUser(self,userName,passWord):
             thisUserName = userName
             thisUserPassword = passWord
-            loginConn = create_connection(r"/home/masonc/Documents/library database app/Users.db")
+            loginConn = create_connection(self.current_working_directory_and_Users_DB_file)
             cur = loginConn.cursor()
             cur.execute("SELECT * FROM USERS \
                         WHERE UserName = ?  \
