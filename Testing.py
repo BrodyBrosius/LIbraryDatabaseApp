@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from LibraryManagementConsole import *
 from Author_Class import *
 from Book_Class import *
@@ -10,4 +12,4 @@ class Test():
         print("Testing Started...")
         newLibMgmtConsole = libraryManagementConsole(currentlyActiveUser=None)
 
-testOne = Test()
+testTwo = Test()

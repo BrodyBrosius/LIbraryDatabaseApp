@@ -9,6 +9,7 @@ import sys
 class libraryManagementConsole():
     def __init__(self,currentlyActiveUser):
         self.current_working_directory = os.getcwd()
+        print(self.current_working_directory)
         self.current_working_directory_and_Users_DB_file = os.path.join(self.current_working_directory,'Users.db')
         self.current_working_directory_and_Library_DB_file = os.path.join(self.current_working_directory, 'Library.db')
 
@@ -21,13 +22,13 @@ class libraryManagementConsole():
         elif(not os.path.exists(self.current_working_directory_and_Users_DB_file) and os.path.exists(self.current_working_directory_and_Library_DB_file)):
             createNewDbResponse = raw_input("There appears to be a Library Database already present but no Users database. Create one now?")
             if(createNewDbResponse == 'y'):
-                self.createNewUsersDatabase()
+                DatabaseFunctions.createNewUsersDatabase(self.current_working_directory_and_Users_DB_file)
 
         
         elif(os.path.exists(self.current_working_directory_and_Users_DB_file) and (not os.path.exists(self.current_working_directory_and_Library_DB_file))):
             createNewDbResponse = raw_input("There appears to be a Users database but no Library. Create one now?")
             if(createNewDbResponse == 'y'):
-                self.createNewLibraryDatabase()
+                DatabaseFunctions.createNewLibraryDatabase(self.current_working_directory_and_Library_DB_file)
 
         else:
             self.createNewUsersDatabaseAndLibraryDatabase()
@@ -64,42 +65,14 @@ class libraryManagementConsole():
     def createNewUsersDatabaseAndLibraryDatabase(self):
         createNewDbResponse = raw_input("This appears to be a new installation as no users or library databases were found. Create them now?")
         if(createNewDbResponse == 'y'):
-            self.createNewUsersDatabase()            
-            self.createNewLibraryDatabase()    
+            DatabaseFunctions.createNewUsersDatabase(self.current_working_directory_and_Users_DB_file)            
+            DatabaseFunctions.createNewLibraryDatabase(self.current_working_directory_and_Library_DB_file)    
     
-    def createNewUsersDatabase(self):
-        userConn = create_connection(self.current_working_directory_and_Users_DB_file)
-        sql_create_users_table = """ CREATE TABLE IF NOT EXISTS USERS (
-                                        UserID      INT PRIMARY KEY,
-                                        UserName    TEXT,
-                                        Pass        TEXT
-                                    );"""
-        create_table(userConn,sql_create_users_table)
-        print("CONSOLE LOG: New users database and accompanying table completed.")
     
-    def createNewLibraryDatabase(self):
-        libConn = create_connection(self.current_working_directory_and_Library_DB_file)
-        sql_create_authors_table = """ CREATE TABLE IF NOT EXISTS AUTHOR (
-                                        AuthorID    INT PRIMARY KEY,
-                                        FirstName   VARCHAR,
-                                        LastName    VARCHAR
-                                    );"""
-        sql_create_books_table = """CREATE TABLE IF NOT EXISTS BOOK (
-                                        BookID          INT PRIMARY KEY,
-                                        AuthorID        INT REFERENCES AUTHOR(AuthorID),
-                                        Title           VARCHAR,
-                                        NumOfPages      INT,
-                                        CurrentStatus   VARCHAR,
-                                        AuthorFullName  VARCHAR
-                                    );"""
-        create_table(libConn, sql_create_authors_table)
-        create_table(libConn, sql_create_books_table)
-        print("CONSOLE LOG: New Library database and accompanying tables completed.")
-
     def loginUser(self,userName,passWord):
             thisUserName = userName
             thisUserPassword = passWord
-            loginConn = create_connection(self.current_working_directory_and_Users_DB_file)
+            loginConn = DatabaseFunctions.create_connection(self.current_working_directory_and_Users_DB_file)
             cur = loginConn.cursor()
             cur.execute("SELECT * FROM USERS \
                         WHERE UserName = ?  \
@@ -155,11 +128,12 @@ class libraryManagementConsole():
                         print("=====ADD BOOK=====")
                         authFirstName = raw_input("Author First Name: ")
                         authLastName  = raw_input("Author Last Name: ")
+                        authFullName = authFirstName + " " + authLastName
                         authID = raw_input("Author ID: ")
                         bookTitle = raw_input("Book Title: ")
                         numPages = input("Number of Pages: ")
-                        newBook = Book(authFirstName,authLastName,authID,bookTitle,numPages)
-                        newBook.addBookToDatabase()
+                        DatabaseFunctions.addBookToDatabase(authFirstName,authLastName,authID,bookTitle,numPages,"NEW",authorFullName)
+                        
                     elif(bookInput == 2):
                         print("\n")
                         print("=====EDIT STATUS=====")
@@ -219,8 +193,7 @@ class libraryManagementConsole():
                         print("\n =====ADD MENU=====")
                         firstNameInput = raw_input("What is the author's first name?")
                         lastNameInput = raw_input("What is the author's last name?")
-                        createdAuthor = Author(firstNameInput,lastNameInput)
-                        createdAuthor.addAuthorToDatabase()
+                        DatabaseFunctions.addAuthorToDatabase(firstNameInput,lastNameInput)
                     elif(authInput == 2):
                         Author.displayAuthorTable(self) #might want to make it prettier
                         print("\n =====EDIT MENU=====")

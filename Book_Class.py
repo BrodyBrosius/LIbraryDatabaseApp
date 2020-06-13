@@ -42,17 +42,9 @@ class Book(Author):
         return self.authorFullName
         
     
-    def addBookToDatabase(self):
-        newBookConn = create_connection(r"/home/masonc/Documents/library database app/Library.db")
-        newBookConn.execute("INSERT INTO BOOK (BookID,AuthorID,Title,NumOfPages,CurrentStatus,AuthorFullName)   \
-                            VALUES (?,?,?,?,?,?)", (int(self.getBookID()), int(self.getAuthorID()), str(self.getBookTitle()),
-                            int(self.getNumOfPages()),str(self.getCurrentStatus()),str(self.getAuthorFullName())))
-        newBookConn.commit()
+    
 
-    @staticmethod
-    def displayBookTable(self):
-        bookConn = create_connection(r"/home/masonc/Documents/library database app/Library.db")
-        print pd.read_sql_query("SELECT * FROM BOOK",bookConn)
+   
 
     @staticmethod
     def editBookStatus(self):
